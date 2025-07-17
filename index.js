@@ -1,17 +1,25 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+app.use(express.json());
 
-// Ruta raíz
-app.get('/', (req, res) => {
-  res.send('¡Hola desde tu backend Alexa en Render!');
+app.post('/alexa', (req, res) => {
+  console.log('Solicitud recibida de Alexa:', req.body);
+
+  const respuesta = {
+    version: '1.0',
+    response: {
+      outputSpeech: {
+        type: 'PlainText',
+        text: 'Hola, tu skill está conectada correctamente.',
+      },
+      shouldEndSession: true
+    }
+  };
+
+  res.json(respuesta);
 });
 
-// Aquí podrías agregar más rutas para manejar peticiones desde Alexa
-// Por ejemplo:
-// app.post('/alexa', (req, res) => { ... });
-
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
-
